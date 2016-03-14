@@ -4,6 +4,10 @@ var request = require('request-promise');
 var io = require('socket.io')(http);
 var _ = require('lodash');
 
+var cors = require('cors');
+
+app.use(cors());
+
 var config = {
   APPID: process.env.APPID
 }
