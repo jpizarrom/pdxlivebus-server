@@ -32,10 +32,10 @@ function getVehicles() {
   });
 }
 
-setInterval(getVehicles, 5000)
+setInterval(getVehicles, 5000);
 
 app.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
+  res.send(vehicles);
 });
 
 io.on('connection', function(socket){
