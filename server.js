@@ -5,6 +5,10 @@ var config = require('./config');
 var io = require('socket.io')(http);
 var _ = require('lodash');
 
+config = config || {
+  APPID: process.env.APPID
+}
+
 var VEHICLE_URL = 'http://developer.trimet.org/ws/v2/vehicles';
 
 var vehicles = [];
@@ -41,6 +45,6 @@ io.on('connection', function(socket){
 });
 
 
-http.listen(3001, function(){
+http.listen(3001 || process.env.PORT, function(){
   console.log('listening on *:3001');
 });
