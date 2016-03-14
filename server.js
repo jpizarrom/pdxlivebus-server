@@ -1,15 +1,12 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var request = require('request-promise');
-var config = require('./config');
 var io = require('socket.io')(http);
 var _ = require('lodash');
 
-config = config || {
+var config = {
   APPID: process.env.APPID
 }
-
-console.log(process.env.APPID);
 
 var VEHICLE_URL = 'http://developer.trimet.org/ws/v2/vehicles';
 
