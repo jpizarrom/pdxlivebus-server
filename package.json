@@ -9,6 +9,7 @@
   "author": "Jason Brown",
   "license": "MIT",
   "dependencies": {
+    "cors": "^2.7.1",
     "express": "^4.13.4",
     "lodash": "^4.6.1",
     "request": "^2.69.0",
