@@ -9,6 +9,8 @@ config = config || {
   APPID: process.env.APPID
 }
 
+console.log(process.env.APPID);
+
 var VEHICLE_URL = 'http://developer.trimet.org/ws/v2/vehicles';
 
 var vehicles = [];
