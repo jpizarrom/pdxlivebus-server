@@ -48,6 +48,6 @@ io.on('connection', function(socket){
 });
 
 
-http.listen(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3001, function(){
+http.listen(process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3001, process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1', function(){
   console.log('listening on *:3001');
 });
