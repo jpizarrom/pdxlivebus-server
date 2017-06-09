@@ -1,0 +1,21 @@
+jobs:
+  - name: pdxlivebus-server_runCI
+    type: runCI
+    steps:
+      - OUT: jpizarrom-pdxlivebus-server-image
+
+  - name: pdxlivebus-server-manifest
+    type: manifest
+    steps:
+      - IN: jpizarrom-pdxlivebus-server-image
+      - IN: dockercloud-options
+      - IN: jpizarrom-pdxlivebus-server-params
+      - TASK: managed
+
+  - name: deploy-jpizarrom-pdxlivebus-server
+    type: deploy
+    steps:
+      - IN: pdxlivebus-server-manifest
+      - IN: dockercloud
+      - TASK: managed
+        deployMethod: upgrade

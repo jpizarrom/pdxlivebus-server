@@ -1,0 +1,37 @@
+resources:
+  - name: jpizarrom-pdxlivebus-server-image
+    type: image
+    integration: dockerhub
+    pointer:
+      sourceName: "jpizarrom/pdxlivebus-server"
+      isPull: false
+    seed:
+      versionName: "latest"
+
+  - name: dockercloud
+    type: cluster
+    integration: dockercloud
+
+  - name: dockercloud-options
+    type: dockerOptions
+    version:
+      # expose:
+      #   - "8080"
+      memory: 128
+      cpuShares: 256
+      portMappings:
+        - "8080:8080"
+      restartPolicy:
+        - name: Always
+      tags:
+        - pdxlivebus-server
+
+  - name: jpizarrom-pdxlivebus-server-params
+    type: params
+    version:
+      params:
+        # VEHICLE_URL VEHICLE_URL_PASSWORD VEHICLE_URL_USERNAME
+        secure: lnkrKafrelAaxR7oadmiU0GqmZHixzmZnulcT18rlpuyh5dUcluEzArxMIAIgblTIjfoZbysA0A4vXuLwaMfaiUgLjPE334ZnoJ9HsAQDcuVihB102WDXGsCV5uKJnEH1uqWBCFnaKVCNAzkF7abikSQcujmgj4BezXNAiD4heZQzFzJnyfjQzB7cQfjg0MabnMHH1nV5xmcPnLjGUWSCBo/W/i4n7KAkSHlGEplTYafmR18621CxqGADuhpvEQzBdVdE3+XeA+yyF/7NddVZ7bGAT2y2dhk1oxD4PnlR7vpnvMxeLSZpeS4DI8SyOa5kzQvie9KliQlwSlom5uIBw==
+        OPENSHIFT_NODEJS_IP: 0.0.0.0
+        OPENSHIFT_NODEJS_PORT: 8080
+        VIRTUAL_HOST: scllivebus-server.pedalean.com

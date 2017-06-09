@@ -9,25 +9,38 @@ var cors = require('cors');
 app.use(cors());
 
 var config = {
-  APPID: process.env.APPID
+  VEHICLE_URL: process.env.VEHICLE_URL,
+  USERNAME: process.env.VEHICLE_URL_USERNAME,
+  PASSWORD: process.env.VEHICLE_URL_PASSWORD,
+  LOG_KEY: process.env.VEHICLE_LOG_KEY,
 }
-
-var VEHICLE_URL = 'http://developer.trimet.org/ws/v2/vehicles';
 
 var vehicles = [];
 
 io.set('origins', '*:*');
 
 function getVehicles() {
-  request(VEHICLE_URL, {
-    qs: {
-      'appID': config.APPID
-    }
+  request(config.VEHICLE_URL, {
+  auth: {
+    user: config.USERNAME,
+    pass: config.PASSWORD,
+    sendImmediately: false
+  }
   }).then(function(data) {
     var json = JSON.parse(data);
-    if (json && json.resultSet) {
-      vehicles = _.map(json.resultSet.vehicle, function(vehicle) {
-        return _.pick(vehicle, ['routeNumber', 'delay', 'inCongestion', 'latitude', 'longitude', 'type', 'vehicleID']);
+    console.log(json[config.LOG_KEY]);
+    if (json && json.posiciones) {
+      vehicles = _.map(json.posiciones, function(vehicle) {
+        var arr = /^([^;]+[;]){0}([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);([^;]+);/.exec(vehicle);
+        return {
+          routeNumber: arr[9],
+          delay: 0,
+          inCongestion: null,
+          latitude: arr[4],
+          longitude: arr[5],
+          type: "bus",
+          vehicleID: arr[3]
+        }
       });
 
       io.emit('vehicles_update', vehicles);
@@ -35,7 +48,8 @@ function getVehicles() {
   });
 }
 
-setInterval(getVehicles, 5000);
+getVehicles();
+setInterval(getVehicles, 60000);
 
 app.get('/', function(req, res){
   res.send(vehicles);
