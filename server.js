@@ -131,6 +131,31 @@ if (process.env.SENTRY_DSN) {
   app.use(Raven.requestHandler());
 }
 
+app.get('/whereis/r/:rid', function(req, res) {
+  res.send(
+    vehicles.filter(function (el) {
+      return el.routeNumber.indexOf(req.params.rid) > -1
+    })
+  );
+});
+
+app.get('/whereis/r/:rid/:vid', function(req, res) {
+  res.send(
+    vehicles.filter(function (el) {
+      return el.vehicleID.indexOf(req.params.vid) > -1 &&
+        el.routeNumber.indexOf(req.params.rid) > -1
+    })
+  );
+});
+
+app.get('/whereis/v/:vid', function(req, res) {
+  res.send(
+    vehicles.filter(function (el) {
+      return el.vehicleID.indexOf(req.params.vid) > -1
+    })
+  );
+});
+
 app.get('/', function(req, res){
   res.send(vehicles);
 });
