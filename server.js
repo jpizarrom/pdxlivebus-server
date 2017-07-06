@@ -8,6 +8,13 @@ var cors = require('cors');
 
 var AWS = require('aws-sdk');
 var util = require('util');
+var Raven = require('raven');
+
+if (process.env.SENTRY_DSN) {
+  Raven.config(process.env.RAVEN_DSN, {
+    captureUnhandledRejections: true
+  }).install();
+}
 
 // configure AWS
 AWS.config.update({
@@ -119,6 +126,10 @@ function deleteMessageCallback(err, data) {
 
 // getMessages();
 setTimeout(getMessages, 1000);
+
+if (process.env.SENTRY_DSN) {
+  app.use(Raven.requestHandler());
+}
 
 app.get('/', function(req, res){
   res.send(vehicles);
